@@ -21,11 +21,15 @@ def _load_json(url: str, timeout: int = DEFAULT_TIMEOUT) -> dict[str, Any]:
         with urlopen(url, timeout=timeout) as response:
             return json.loads(response.read().decode("utf-8"))
     except HTTPError as exc:
-        try:
-            payload = json.loads(exc.read().decode("utf-8"))
-            message = payload.get("message", exc.reason)
-        except Exception:
-            message = exc.reason
+        raw_error = exc.read().decode("utf-8", errors="replace")
+        message = exc.reason
+        if raw_error:
+            try:
+                payload = json.loads(raw_error)
+            except json.JSONDecodeError:
+                message = raw_error
+            else:
+                message = payload.get("message", exc.reason)
         raise WeatherError(f"weather service error: {message}") from exc
     except URLError as exc:
         raise WeatherError(f"network error: {exc.reason}") from exc
