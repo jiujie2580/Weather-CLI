@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "weather-cli-jiujie2580"
+version = "0.1.0"
+description = "A small OpenWeather command-line weather lookup tool."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "jiujie2580" }]
+license = { text = "MIT" }
+keywords = ["weather", "cli", "openweather"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Environment :: Console",
+]
+
+[project.scripts]
+weather-cli = "weather:main"
